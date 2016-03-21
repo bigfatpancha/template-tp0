@@ -60,5 +60,13 @@ public class RegExGeneratorTest {
         assertTrue(validate("[abc]+", 1));
     }
 
+    @Test
+    public void testCharacterSetWithOtherQuantifiers() {
+        assertTrue(validate("[abc]*", 1));
+    }
 
+    @Test
+    public void testCharacterSetMoreThanOneWord() {
+        assertTrue(validate("[abc]", 3));
+    }
 }

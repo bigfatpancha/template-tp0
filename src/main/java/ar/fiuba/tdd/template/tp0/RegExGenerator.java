@@ -78,14 +78,13 @@ public class RegExGenerator {
             int posCuant = i + 1;
             Token token = null;
             if (isLiteral(regEx.charAt(posChar))){
+                List<Character> valores = new ArrayList<Character>();
                 if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))) {
-                    List<Character> valores = new ArrayList<Character>();
                     valores.add(regEx.charAt(posChar));
                     token = new Token(regEx.charAt(posCuant), valores);
                     i += 2;
                 }
                 else {
-                    List<Character> valores = new ArrayList<Character>();
                     valores.add(regEx.charAt(posChar));
                     token = new Token('n', valores);
                     i += 1;
@@ -122,14 +121,13 @@ public class RegExGenerator {
             } else if (isContrBarra(regEx.charAt(posChar))) {
                 posChar += 1;
                 posCuant += 1;
+                List<Character> valores = new ArrayList<Character>();
                 if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))){
-                    List<Character> valores = new ArrayList<Character>();
                     valores.add(regEx.charAt(posChar));
                     token = new Token(regEx.charAt(posCuant), valores);
                     i = posChar + 2;
                 }
                 else {
-                    List<Character> valores = new ArrayList<Character>();
                     valores.add(regEx.charAt(posChar));
                     token = new Token('n', valores);
                     i = posChar + 1;

@@ -19,7 +19,7 @@ public class Token {
     }
 
     public int getTotalValores(){
-        return this.valores.size();
+        return this.valores.size() - 1;
     }
 
     public Character getValor(int pos) {
