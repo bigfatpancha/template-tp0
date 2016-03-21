@@ -66,11 +66,11 @@ public class RegExGenerator {
 
     private List<Token> parseRegEx(String regEx) {
         List<Token> tokens = new ArrayList<>();
-        int totalChars = regEx.length();
-        int i = 0;
+        Integer totalChars = regEx.length();
+        Integer i = 0;
         while (i < totalChars) {
-            int posChar = i;
-            int posQuantifier = i + 1;
+            Integer posChar = i;
+            Integer posQuantifier = i + 1;
             Token token = null;
             if (isLiteral(regEx.charAt(posChar))) {
                 List<Character> values = new ArrayList<>();

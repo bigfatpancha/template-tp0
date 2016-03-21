@@ -69,4 +69,19 @@ public class RegExGeneratorTest {
     public void testCharacterSetMoreThanOneWord() {
         assertTrue(validate("[abc]", 3));
     }
+
+    @Test
+    public void testSeveralCharacterSet() {
+        assertTrue(validate("[abc]asc[ewa]", 1));
+    }
+
+    @Test
+    public void testAllQuantifiers() {
+        assertTrue(validate("[abc]+a?[ewa]*", 1));
+    }
+
+    @Test
+    public void testIntegration() {
+        assertTrue(validate(".+r+z+[cvb]?q+8+[1A2]*", 1));
+    }
 }
