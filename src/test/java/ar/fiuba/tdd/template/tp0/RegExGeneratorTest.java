@@ -29,7 +29,7 @@ public class RegExGeneratorTest {
     public void testAnyCharacter() {
         assertTrue(validate(".", 1));
     }
-/*
+
     @Test
     public void testMultipleCharacters() {
         assertTrue(validate("...", 1));
@@ -59,6 +59,6 @@ public class RegExGeneratorTest {
     public void testCharacterSetWithQuantifiers() {
         assertTrue(validate("[abc]+", 1));
     }
-    */
-    // TODO: Add more tests!!!
+
+
 }

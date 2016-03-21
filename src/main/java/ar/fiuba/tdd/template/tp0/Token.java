@@ -6,15 +6,15 @@ import java.util.List;
  * Created by Lucía on 19/3/2016.
  */
 public class Token {
-    private String cuantificador;
+    private Character cuantificador;
     private List<Character> valores;
 
-    public Token(String cuantificador, List<Character> valores) {
+    public Token(Character cuantificador, List<Character> valores) {
         this.cuantificador = cuantificador;
         this.valores = valores;
     }
 
-    public String getCuantificador(){
+    public Character getCuantificador(){
         return this.cuantificador;
     }
 
