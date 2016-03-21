@@ -12,7 +12,7 @@ public class RegExGenerator {
     }
 
     public List<String> generate(String regEx, int numberOfResults) {
-        List<String> results =  new ArrayList<String>();
+        List<String> results =  new ArrayList<>();
         if (numberOfResults > 0) {
             List<Token> tokens = parseRegEx(regEx);
             for (int i = 0; i < numberOfResults; i++) {
@@ -26,43 +26,38 @@ public class RegExGenerator {
         return results;
     }
 
-    /**
-     * Recibe un desde y un hasta
-     * @param token
-     * @return
-     */
     private String generateString(Token token) {
         StringBuilder builder = new StringBuilder();
 
         //Primero calculo cuántas veces corre el for
-        int iteraciones = calcularIteraciones(token.getCuantificador());
+        int iterations = calcularIteraciones(token.getCuantificador());
 
-        for(int i=0;i<iteraciones;i++) {
+        for(int i=0;i<iterations;i++) {
             int num;
             if (token.getTotalValores() == 1)
                 num = 0;
             else
-                num = randomIntEntre(0, token.getTotalValores());
+                num = randomIntBetween(0, token.getTotalValores());
 
-            String unCaracter = token.getValor(num).toString();
-            builder.append(unCaracter);
+            String aChar = token.getValor(num).toString();
+            builder.append(aChar);
         }
 
         return builder.toString();
     }
 
-    private static int randomIntEntre(Integer desde, Integer hasta) {
+    private static int randomIntBetween(Integer desde, Integer hasta) {
         Double D = Math.floor(desde + Math.random() * (1+hasta-desde));
         return D.intValue();
     }
 
     private int calcularIteraciones(Character cuantificador) {
         if(cuantificador.equals('*')) {
-            return randomIntEntre(0,this.maxLength);
+            return randomIntBetween(0,this.maxLength);
         } else if(cuantificador.equals('+')) {
-            return randomIntEntre(1,this.maxLength);
+            return randomIntBetween(1,this.maxLength);
         } else if(cuantificador.equals('?')) {
-            return randomIntEntre(0,1);
+            return randomIntBetween(0,1);
         } else if (cuantificador.equals('n')) {
             return 1;
         } else
@@ -70,75 +65,75 @@ public class RegExGenerator {
     }
 
     private List<Token> parseRegEx(String regEx) {
-        List<Token> tokens = new ArrayList<Token>();
+        List<Token> tokens = new ArrayList<>();
         int totalChars = regEx.length();
         int i = 0;
         while (i < totalChars) {
             int posChar = i;
-            int posCuant = i + 1;
+            int posQuantifier = i + 1;
             Token token = null;
             if (isLiteral(regEx.charAt(posChar))){
-                List<Character> valores = new ArrayList<Character>();
-                if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))) {
-                    valores.add(regEx.charAt(posChar));
-                    token = new Token(regEx.charAt(posCuant), valores);
+                List<Character> values = new ArrayList<>();
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))) {
+                    values.add(regEx.charAt(posChar));
+                    token = new Token(regEx.charAt(posQuantifier), values);
                     i += 2;
                 }
                 else {
-                    valores.add(regEx.charAt(posChar));
-                    token = new Token('n', valores);
+                    values.add(regEx.charAt(posChar));
+                    token = new Token('n', values);
                     i += 1;
                 }
-            } else if (isCorchete(regEx.charAt(posChar))) {
+            } else if (isSquareBracket(regEx.charAt(posChar))) {
                 posChar += 1;
-                posCuant += 1;
-                List<Character> valores = new ArrayList<Character>();
-                while(!isCorcheteCierra(regEx.charAt(posChar))){
+                posQuantifier += 1;
+                List<Character> values = new ArrayList<>();
+                while(!isSquareBracketClose(regEx.charAt(posChar))){
                     if (isLiteral(regEx.charAt(posChar))) {
-                        valores.add(regEx.charAt(posChar));
+                        values.add(regEx.charAt(posChar));
                     }
                     else {
-                        if (isPunto(regEx.charAt(posChar))){
-                            valores.addAll(todosLosChars());
+                        if (isDot(regEx.charAt(posChar))){
+                            values.addAll(allTheChars());
                         }
                         else {
-                            if (isContrBarra(regEx.charAt(posChar))) {
+                            if (isBackSlash(regEx.charAt(posChar))) {
                                 posChar += 1;
-                                valores.add(regEx.charAt(posChar));
+                                values.add(regEx.charAt(posChar));
                             }
                         }
                     }
                     posChar += 1;
-                    posCuant += 1;
+                    posQuantifier += 1;
                 }
-                if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))){
-                    token = new Token(regEx.charAt(posCuant), valores);
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                    token = new Token(regEx.charAt(posQuantifier), values);
                     i = posChar + 2;
                 } else {
-                    token = new Token('n', valores);
+                    token = new Token('n', values);
                     i = posChar + 1;
                 }
-            } else if (isContrBarra(regEx.charAt(posChar))) {
+            } else if (isBackSlash(regEx.charAt(posChar))) {
                 posChar += 1;
-                posCuant += 1;
-                List<Character> valores = new ArrayList<Character>();
-                if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))){
-                    valores.add(regEx.charAt(posChar));
-                    token = new Token(regEx.charAt(posCuant), valores);
+                posQuantifier += 1;
+                List<Character> values = new ArrayList<>();
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                    values.add(regEx.charAt(posChar));
+                    token = new Token(regEx.charAt(posQuantifier), values);
                     i = posChar + 2;
                 }
                 else {
-                    valores.add(regEx.charAt(posChar));
-                    token = new Token('n', valores);
+                    values.add(regEx.charAt(posChar));
+                    token = new Token('n', values);
                     i = posChar + 1;
                 }
-            } else if (isPunto(regEx.charAt(posChar))) {
-                if ((posCuant < totalChars) && (isCuantificador(regEx.charAt(posCuant)))){
-                    token = new Token(regEx.charAt(posCuant), todosLosChars());
+            } else if (isDot(regEx.charAt(posChar))) {
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                    token = new Token(regEx.charAt(posQuantifier), allTheChars());
                     i += posChar + 2;
                 }
                 else {
-                    token = new Token('n', todosLosChars());
+                    token = new Token('n', allTheChars());
                     i = posChar + 1;
                 }
             }
@@ -147,49 +142,39 @@ public class RegExGenerator {
         return tokens;
     }
 
-    private boolean isLiteral(Character caracter) {
-        for (int i = 0; i < specialChars.length; i++){
-            if (caracter.equals(specialChars[i]))
+    private boolean isLiteral(Character aChar) {
+        for (Character specialChar : specialChars) {
+            if (aChar.equals(specialChar))
                 return false;
         }
         return true;
     }
 
-    private boolean isCorchete(Character caracter) {
-        if (caracter.equals('['))
-            return true;
-        return false;
+    private boolean isSquareBracket(Character aChar) {
+        return aChar.equals('[');
     }
 
-    private boolean isCorcheteCierra(Character caracter) {
-        if (caracter.equals(']'))
-            return true;
-        return false;
+    private boolean isSquareBracketClose(Character aChar) {
+        return (aChar.equals(']'));
     }
 
-    private boolean isCuantificador(Character caracter) {
-        if (caracter.equals('*') || caracter.equals('+') || caracter.equals('?'))
-            return true;
-        return false;
+    private boolean isQuantifier(Character aChar) {
+        return (aChar.equals('*') || aChar.equals('+') || aChar.equals('?'));
     }
 
-    private boolean isContrBarra(Character caracter) {
-        if (caracter.equals('\\'))
-            return true;
-        return false;
+    private boolean isBackSlash(Character aChar) {
+        return (aChar.equals('\\'));
     }
 
-    private boolean isPunto(Character caracter) {
-        if (caracter.equals('.'))
-            return true;
-        return false;
+    private boolean isDot(Character aChar) {
+        return (aChar.equals('.'));
     }
 
-    private List<Character> todosLosChars() {
-        List<Character> todos = new ArrayList<Character>();
+    private List<Character> allTheChars() {
+        List<Character> all = new ArrayList<>();
         for (int i = 0; i <= 255; i++){
-            todos.add((char)i);
+            all.add((char)i);
         }
-        return todos;
+        return all;
     }
 }
