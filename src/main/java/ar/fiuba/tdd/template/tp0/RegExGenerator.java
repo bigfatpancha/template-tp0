@@ -12,7 +12,7 @@ public class RegExGenerator {
     }
 
     public List<String> generate(String regEx, int numberOfResults) {
-        List<String> results =  new ArrayList<>();
+        List<String> results = new ArrayList<>();
         if (numberOfResults > 0) {
             List<Token> tokens = parseRegEx(regEx);
             for (int i = 0; i < numberOfResults; i++) {
@@ -30,14 +30,14 @@ public class RegExGenerator {
         StringBuilder builder = new StringBuilder();
 
         //Primero calculo cuántas veces corre el for
-        int iterations = calcularIteraciones(token.getCuantificador());
+        int iterations = calcularIteraciones(token.getQuantificador());
 
-        for(int i=0;i<iterations;i++) {
+        for (int i = 0; i < iterations; i++) {
             int num;
-            if (token.getTotalValores() == 1)
+            if (token.getTotalValues() == 1)
                 num = 0;
             else
-                num = randomIntBetween(0, token.getTotalValores());
+                num = randomIntBetween(0, token.getTotalValues());
 
             String aChar = token.getValor(num).toString();
             builder.append(aChar);
@@ -47,17 +47,17 @@ public class RegExGenerator {
     }
 
     private static int randomIntBetween(Integer desde, Integer hasta) {
-        Double D = Math.floor(desde + Math.random() * (1+hasta-desde));
+        Double D = Math.floor(desde + Math.random() * (1 + hasta - desde));
         return D.intValue();
     }
 
     private int calcularIteraciones(Character cuantificador) {
-        if(cuantificador.equals('*')) {
-            return randomIntBetween(0,this.maxLength);
-        } else if(cuantificador.equals('+')) {
-            return randomIntBetween(1,this.maxLength);
-        } else if(cuantificador.equals('?')) {
-            return randomIntBetween(0,1);
+        if (cuantificador.equals('*')) {
+            return randomIntBetween(0, this.maxLength);
+        } else if (cuantificador.equals('+')) {
+            return randomIntBetween(1, this.maxLength);
+        } else if (cuantificador.equals('?')) {
+            return randomIntBetween(0, 1);
         } else if (cuantificador.equals('n')) {
             return 1;
         } else
@@ -72,14 +72,13 @@ public class RegExGenerator {
             int posChar = i;
             int posQuantifier = i + 1;
             Token token = null;
-            if (isLiteral(regEx.charAt(posChar))){
+            if (isLiteral(regEx.charAt(posChar))) {
                 List<Character> values = new ArrayList<>();
                 if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))) {
                     values.add(regEx.charAt(posChar));
                     token = new Token(regEx.charAt(posQuantifier), values);
                     i += 2;
-                }
-                else {
+                } else {
                     values.add(regEx.charAt(posChar));
                     token = new Token('n', values);
                     i += 1;
@@ -88,15 +87,13 @@ public class RegExGenerator {
                 posChar += 1;
                 posQuantifier += 1;
                 List<Character> values = new ArrayList<>();
-                while(!isSquareBracketClose(regEx.charAt(posChar))){
+                while (!isSquareBracketClose(regEx.charAt(posChar))) {
                     if (isLiteral(regEx.charAt(posChar))) {
                         values.add(regEx.charAt(posChar));
-                    }
-                    else {
-                        if (isDot(regEx.charAt(posChar))){
+                    } else {
+                        if (isDot(regEx.charAt(posChar))) {
                             values.addAll(allTheChars());
-                        }
-                        else {
+                        } else {
                             if (isBackSlash(regEx.charAt(posChar))) {
                                 posChar += 1;
                                 values.add(regEx.charAt(posChar));
@@ -106,7 +103,7 @@ public class RegExGenerator {
                     posChar += 1;
                     posQuantifier += 1;
                 }
-                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))) {
                     token = new Token(regEx.charAt(posQuantifier), values);
                     i = posChar + 2;
                 } else {
@@ -117,22 +114,20 @@ public class RegExGenerator {
                 posChar += 1;
                 posQuantifier += 1;
                 List<Character> values = new ArrayList<>();
-                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))) {
                     values.add(regEx.charAt(posChar));
                     token = new Token(regEx.charAt(posQuantifier), values);
                     i = posChar + 2;
-                }
-                else {
+                } else {
                     values.add(regEx.charAt(posChar));
                     token = new Token('n', values);
                     i = posChar + 1;
                 }
             } else if (isDot(regEx.charAt(posChar))) {
-                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))){
+                if ((posQuantifier < totalChars) && (isQuantifier(regEx.charAt(posQuantifier)))) {
                     token = new Token(regEx.charAt(posQuantifier), allTheChars());
                     i += posChar + 2;
-                }
-                else {
+                } else {
                     token = new Token('n', allTheChars());
                     i = posChar + 1;
                 }
@@ -172,8 +167,8 @@ public class RegExGenerator {
 
     private List<Character> allTheChars() {
         List<Character> all = new ArrayList<>();
-        for (int i = 0; i <= 255; i++){
-            all.add((char)i);
+        for (int i = 0; i <= 255; i++) {
+            all.add((char) i);
         }
         return all;
     }

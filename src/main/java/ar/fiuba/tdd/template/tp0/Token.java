@@ -14,11 +14,11 @@ public class Token {
         this.valores = valores;
     }
 
-    public Character getCuantificador(){
+    public Character getQuantificador() {
         return this.cuantificador;
     }
 
-    public int getTotalValores(){
+    public int getTotalValues() {
         return this.valores.size() - 1;
     }
 
