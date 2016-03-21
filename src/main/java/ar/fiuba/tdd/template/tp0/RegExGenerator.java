@@ -30,7 +30,7 @@ public class RegExGenerator {
         StringBuilder builder = new StringBuilder();
 
         //Primero calculo cuántas veces corre el for
-        int iterations = calcularIteraciones(token.getQuantificador());
+        int iterations = calculateIterations(token.getQuantifier());
 
         for (int i = 0; i < iterations; i++) {
             int num;
@@ -46,19 +46,19 @@ public class RegExGenerator {
         return builder.toString();
     }
 
-    private static int randomIntBetween(Integer desde, Integer hasta) {
-        Double D = Math.floor(desde + Math.random() * (1 + hasta - desde));
+    private static int randomIntBetween(Integer from, Integer until) {
+        Double D = Math.floor(from + Math.random() * (1 + until - from));
         return D.intValue();
     }
 
-    private int calcularIteraciones(Character cuantificador) {
-        if (cuantificador.equals('*')) {
+    private int calculateIterations(Character quantifier) {
+        if (quantifier.equals('*')) {
             return randomIntBetween(0, this.maxLength);
-        } else if (cuantificador.equals('+')) {
+        } else if (quantifier.equals('+')) {
             return randomIntBetween(1, this.maxLength);
-        } else if (cuantificador.equals('?')) {
+        } else if (quantifier.equals('?')) {
             return randomIntBetween(0, 1);
-        } else if (cuantificador.equals('n')) {
+        } else if (quantifier.equals('n')) {
             return 1;
         } else
             return 0;
