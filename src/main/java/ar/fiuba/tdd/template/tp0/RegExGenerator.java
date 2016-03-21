@@ -67,6 +67,7 @@ public class RegExGenerator {
     }
 
     private List<Token> parseRegEx(String regEx) {
+        List<Token> tokens = new ArrayList<Token>();
         int totalChars = regEx.length();
         for (int i = 0; i < totalChars; i++) {
             Token token = null;
@@ -97,7 +98,8 @@ public class RegExGenerator {
                 }
 
             } else if (isContrBarra(regEx.substring(i))) {
-
+                token = new Token(regEx.substring(i+2),  new ArrayList<Character>(regEx.charAt(i--)));
+                i++;
             } else if (isPunto(regEx.substring(i))) {
                 if (isCuantificador(regEx.substring(i++)))
                     token = new Token(regEx.substring(i), todosLosChars());
@@ -106,8 +108,9 @@ public class RegExGenerator {
                     i--;
                 }
             }
+            tokens.add(token);
         }
-        return null;
+        return tokens;
     }
 
     private boolean isLiteral(String caracter) {

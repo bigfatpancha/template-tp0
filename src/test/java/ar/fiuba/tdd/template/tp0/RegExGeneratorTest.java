@@ -25,8 +25,6 @@ public class RegExGeneratorTest {
                     (item1, item2) -> item1 && item2);
     }
 
-    //TODO: Uncomment these tests
-
     @Test
     public void testAnyCharacter() {
         assertTrue(validate(".", 1));
